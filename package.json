@@ -1,0 +1,26 @@
+{
+  "name": "hit_and_blow",
+  "version": "1.0.0",
+  "description": "TypeScriptの練習用プログラムです。",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc -w",
+    "start": "node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ittyi/hit_and_blow.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ittyi/hit_and_blow/issues"
+  },
+  "homepage": "https://github.com/ittyi/hit_and_blow#readme",
+  "devDependencies": {
+    "@types/node": "^16.4.13",
+    "typescript": "^4.3.5"
+  }
+}
