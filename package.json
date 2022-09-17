@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/ittyi/hit_and_blow#readme",
   "devDependencies": {
+    "@types/node": "^16.4.13",
     "typescript": "^4.3.5"
   }
 }
