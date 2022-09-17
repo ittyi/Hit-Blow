@@ -1,6 +1,8 @@
-const sayHello = (name: string) => {
-	return `Hello, ${name}!`
+const printLine = (text: string, breakLine: boolean = true) => {
+	return process.stdout.write(text + (breakLine ? `\n`: ''))
 }
 
-// console.log(sayHello('Ittyi'))
-process.stdout.write(sayHello('Ittyi'))
+
+printLine("hello");
+printLine("my name is Ittyi!", false);
+printLine("have nice day~~", false);
