@@ -1,1 +1,2 @@
-# Hit-Blow
+# Hit&Blow
+TypeScriptの練習用プログラムです。
