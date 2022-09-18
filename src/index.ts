@@ -7,6 +7,18 @@ printLine("hello");
 printLine("my name is Ittyi!", false);
 printLine("have nice day~~", false);
 
+/* main class */
+class HitAndBlow {
+	answerSource: string[];
+	answer: string[];
+	tryCount: number;
+
+	constructor() {
+		this.answerSource = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+		this.answer = [];
+		this.tryCount = 0;
+	}
+}
 
 const promptInput = async (text: string) => {
 	printLine(`\n${text}\n`, false)
@@ -20,9 +32,10 @@ const promptInput = async (text: string) => {
 // promptInput test code
 ;(
 	async () => {
-		const name = await promptInput('Please enter your name');
-		console.log(name);
-		const age = await promptInput('Please enter your age');
-		console.log(age);
+		// const name = await promptInput('Please enter your name');
+		// console.log(name);
+		// const age = await promptInput('Please enter your age');
+		// console.log(age);
+		const hitAndBlow = new HitAndBlow();
 	}
 )();
