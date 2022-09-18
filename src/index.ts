@@ -37,20 +37,21 @@ class HitAndBlow {
 				this.answer.push(randumNum);
 			}
 		}
-		console.log('answer:', this.answer);
+		// console.log('answer:', this.answer);
 	}
 
 	private checkInputStr(inputNumStr: string[]) {
 		if (inputNumStr.length != this.answer.length) {
 			return false;
 		}
+
 		let checkErrerFlg = true;
 		inputNumStr.forEach(element => {
 			if (this.answerSource.includes(element) == false) {
 				checkErrerFlg = false;
 			}
-
-			/// 配列中で arr[i] が最初/最後に出てくる位置を取得
+			
+			/// 配列中で inputNumStr[i] が最初/最後に出てくる位置を取得
 			let firstIndex = inputNumStr.indexOf(element);
 			let lastIndex = inputNumStr.lastIndexOf(element);
 
@@ -67,10 +68,12 @@ class HitAndBlow {
 			printLine('無効な入力です。')
 			inputNumStr = (await promptInput(`「,」区切りで${this.getAnswerLength()}つの数字を入力してください`)).split(',');
 		}
+
 		const inputArr = inputNumStr;
 		const result = this.check(inputArr);
 		console.log(inputArr)
 		console.log(result)
+
 		if (result.hit >= this.answer.length) {
 			this.tryCount += 1;
 		} else {
