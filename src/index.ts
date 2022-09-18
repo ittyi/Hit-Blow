@@ -30,6 +30,7 @@ class HitAndBlow {
 				this.answer.push(randumNum);
 			}
 		}
+		console.log(this.answer);
 	}
 
 	async play() {
@@ -44,8 +45,6 @@ class HitAndBlow {
 			console.log('one more!', result)
 			await this.play();
 		}
-		
-		console.log('tryCount:', this.tryCount)
 	}
 
 	private check(input: string[]) {
