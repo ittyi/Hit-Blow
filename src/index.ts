@@ -2,11 +2,6 @@ const printLine = (text: string, breakLine: boolean = true) => {
 	return process.stdout.write(text + (breakLine ? `\n`: ''))
 }
 
-// printLine test code
-printLine("hello");
-printLine("my name is Ittyi!", false);
-printLine("have nice day~~");
-
 const promptInput = async (text: string) => {
 	printLine(`\n${text}\n`, false)
 	const input :string = await new Promise(// 非同期処理突入
@@ -22,19 +17,21 @@ class HitAndBlow {
 	private tryCount: number = 0;
 
 	setting() {
-		
-		console.log(this.answer);
 		while (this.answer.length < 3) {
 			const randumNum = String(Math.floor( Math.random() * this.answerSource.length));
 			if ((this.answer).includes(randumNum) == false) {
 				this.answer.push(randumNum);
 			}
 		}
-		console.log(this.answer);
+		console.log('answer:', this.answer);
 	}
 
 	async play() {
-		const inputArr = (await promptInput('「,」区切りで３つの数字を入力してください')).split(',');
+		let inputNumStr = (await promptInput('「,」区切りで３つの数字を入力してください')).split(',');
+		while (this.checkInputStr(inputNumStr) == false) {
+			inputNumStr = (await promptInput('「,」区切りで３つの数字を入力してください')).split(',');
+		}
+		const inputArr = inputNumStr;
 		const result = this.check(inputArr);
 		console.log(inputArr)
 		console.log(result)
@@ -45,6 +42,28 @@ class HitAndBlow {
 			console.log('one more!', result)
 			await this.play();
 		}
+	}
+
+	checkInputStr(inputNumStr: string[]) {
+		if (inputNumStr.length != this.answer.length) {
+			return false;
+		}
+		let checkErrerFlg = true;
+		inputNumStr.forEach(element => {
+			if (this.answerSource.includes(element) == false) {
+				checkErrerFlg = false;
+			}
+
+			/// 配列中で arr[i] が最初/最後に出てくる位置を取得
+			let firstIndex = inputNumStr.indexOf(element);
+			let lastIndex = inputNumStr.lastIndexOf(element);
+			
+			if(firstIndex != lastIndex){
+				console.log('check')
+				checkErrerFlg = false;
+			}
+		});
+		return checkErrerFlg;
 	}
 
 	private check(input: string[]) {
@@ -80,3 +99,4 @@ class HitAndBlow {
 		hitAndBlow.end();
 	}
 )();
+
