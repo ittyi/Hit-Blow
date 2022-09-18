@@ -71,5 +71,6 @@ class HitAndBlow {
 		hitAndBlow.setting();
 		console.log(hitAndBlow.answer);
 		await hitAndBlow.play();
+		console.log('tryCount:', hitAndBlow.tryCount)
 	}
 )();
