@@ -18,10 +18,6 @@ const promptInput = async (text: string) => {
 }
 
 // promptInput test code
-// ↓この書き方じゃテストできない！
-// const test = promptInput('test:');
-// printLine(String(test));
-
 ;(
 	async () => {
 		const name = await promptInput('Please enter your name');
