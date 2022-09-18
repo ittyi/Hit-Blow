@@ -26,9 +26,31 @@ class HitAndBlow {
 		console.log('answer:', this.answer);
 	}
 
+	private checkInputStr(inputNumStr: string[]) {
+		if (inputNumStr.length != this.answer.length) {
+			return false;
+		}
+		let checkErrerFlg = true;
+		inputNumStr.forEach(element => {
+			if (this.answerSource.includes(element) == false) {
+				checkErrerFlg = false;
+			}
+
+			/// 配列中で arr[i] が最初/最後に出てくる位置を取得
+			let firstIndex = inputNumStr.indexOf(element);
+			let lastIndex = inputNumStr.lastIndexOf(element);
+
+			if(firstIndex != lastIndex){
+				checkErrerFlg = false;
+			}
+		});
+		return checkErrerFlg;
+	}
+
 	async play() {
 		let inputNumStr = (await promptInput('「,」区切りで３つの数字を入力してください')).split(',');
 		while (this.checkInputStr(inputNumStr) == false) {
+			printLine('無効な入力です。')
 			inputNumStr = (await promptInput('「,」区切りで３つの数字を入力してください')).split(',');
 		}
 		const inputArr = inputNumStr;
@@ -42,28 +64,6 @@ class HitAndBlow {
 			console.log('one more!', result)
 			await this.play();
 		}
-	}
-
-	checkInputStr(inputNumStr: string[]) {
-		if (inputNumStr.length != this.answer.length) {
-			return false;
-		}
-		let checkErrerFlg = true;
-		inputNumStr.forEach(element => {
-			if (this.answerSource.includes(element) == false) {
-				checkErrerFlg = false;
-			}
-
-			/// 配列中で arr[i] が最初/最後に出てくる位置を取得
-			let firstIndex = inputNumStr.indexOf(element);
-			let lastIndex = inputNumStr.lastIndexOf(element);
-			
-			if(firstIndex != lastIndex){
-				console.log('check')
-				checkErrerFlg = false;
-			}
-		});
-		return checkErrerFlg;
 	}
 
 	private check(input: string[]) {
