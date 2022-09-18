@@ -17,13 +17,15 @@ const promptInput = async (text: string) => {
 
 /* main class */
 class HitAndBlow {
-	answerSource: string[] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-	answer: string[] = [];
-	tryCount: number = 0;
+	private readonly answerSource: string[] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+	private answer: string[] = [];
+	private tryCount: number = 0;
 
 	setting() {
+		
+		console.log(this.answer);
 		while (this.answer.length < 3) {
-			const randumNum = String(Math.floor( Math.random() * 10 ));
+			const randumNum = String(Math.floor( Math.random() * this.answerSource.length));
 			if ((this.answer).includes(randumNum) == false) {
 				this.answer.push(randumNum);
 			}
@@ -35,17 +37,18 @@ class HitAndBlow {
 		const result = this.check(inputArr);
 		console.log(inputArr)
 		console.log(result)
-		if (result.hit == 3) {
+		if (result.hit >= this.answer.length) {
 			this.tryCount += 1;
-			console.log('conglutts!!')
 		} else {
 			this.tryCount += 1;
 			console.log('one more!', result)
 			await this.play();
 		}
+		
+		console.log('tryCount:', this.tryCount)
 	}
 
-	check(input: string[]) {
+	private check(input: string[]) {
 		let hitCount = 0;
 		let blowCount = 0;
 
@@ -62,6 +65,11 @@ class HitAndBlow {
 			blow: blowCount
 		};
 	}
+
+	end() {
+		printLine(`conglutts!! Trial Count: ${this.tryCount}`);
+		process.exit();
+	}
 }
 
 // exec process
@@ -69,8 +77,7 @@ class HitAndBlow {
 	async function () {
 		const hitAndBlow = new HitAndBlow();
 		hitAndBlow.setting();
-		console.log(hitAndBlow.answer);
 		await hitAndBlow.play();
-		console.log('tryCount:', hitAndBlow.tryCount)
+		hitAndBlow.end();
 	}
 )();
