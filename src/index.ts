@@ -15,9 +15,23 @@ class HitAndBlow {
 	private readonly answerSource: string[] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 	private answer: string[] = [];
 	private tryCount: number = 0;
+	private mode: 'normal' | 'hard';
+
+	constructor (mode: 'normal' | 'hard') {
+		this.mode = mode;
+	}
+
+	private getAnswerLength() {
+		switch (this.mode) {
+			case 'normal':
+				return 3;
+			case 'hard':
+				return 4;
+		}
+	}
 
 	setting() {
-		while (this.answer.length < 3) {
+		while (this.answer.length < this.getAnswerLength()) {
 			const randumNum = String(Math.floor( Math.random() * this.answerSource.length));
 			if ((this.answer).includes(randumNum) == false) {
 				this.answer.push(randumNum);
@@ -48,10 +62,10 @@ class HitAndBlow {
 	}
 
 	async play() {
-		let inputNumStr = (await promptInput('「,」区切りで３つの数字を入力してください')).split(',');
+		let inputNumStr = (await promptInput(`「,」区切りで${this.getAnswerLength()}つの数字を入力してください`)).split(',');
 		while (this.checkInputStr(inputNumStr) == false) {
 			printLine('無効な入力です。')
-			inputNumStr = (await promptInput('「,」区切りで３つの数字を入力してください')).split(',');
+			inputNumStr = (await promptInput(`「,」区切りで${this.getAnswerLength()}つの数字を入力してください`)).split(',');
 		}
 		const inputArr = inputNumStr;
 		const result = this.check(inputArr);
@@ -93,7 +107,7 @@ class HitAndBlow {
 // exec process
 ;(
 	async function () {
-		const hitAndBlow = new HitAndBlow();
+		const hitAndBlow = new HitAndBlow('normal');
 		hitAndBlow.setting();
 		await hitAndBlow.play();
 		hitAndBlow.end();
