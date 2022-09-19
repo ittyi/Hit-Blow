@@ -29,7 +29,7 @@ export class HitAndBlow implements Game {
 				this.answer.push(randumNum);
 			}
 		}
-		console.log('answer:', this.answer);
+		// console.log('answer:', this.answer);
 	}
 
 	private checkInputStr(inputNumStr: string[]) {
