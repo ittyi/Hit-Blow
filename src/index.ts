@@ -1,3 +1,41 @@
+/* common feature */
+const nextActions = ['play again', 'exit'] as const;
+type NextAcion = typeof nextActions[number];
+
+class GameProcedure {
+	private currentGameTitle = 'hit and blow';
+	private currentGame = new HitAndBlow();
+
+	public async start() {
+		await this.play();
+	}
+
+	private async play() {
+		printLine(`~~~\n${this.currentGameTitle} を開始します。\n~~~`);
+		await this.currentGame.setting();
+		await this.currentGame.play();
+		this.currentGame.end();
+		
+		const action = await promptSelect<NextAcion>('ゲームを続けますか？', nextActions);
+		if (action === 'play again') {
+			await this.play();
+		} else if (action === 'exit') {
+			this.end();
+		} else {
+			const neverVal: never = action;
+			throw new Error(`${neverVal} is an invalid action.`);
+		}
+	}
+
+	private end() {
+		printLine('ゲームを終了しました。');
+		process.exit();
+	}
+}
+
+
+
+/* hit&blow */
 const modes = ['normal', 'hard'] as const;
 type Mode = typeof modes[number];
 
@@ -60,11 +98,11 @@ class HitAndBlow {
 		this.mode = await promptSelect<Mode>('モードを入力してください。', modes);
 		while (this.answer.length < this.getAnswerLength()) {
 			const randumNum = String(Math.floor( Math.random() * this.answerSource.length));
-			if ((this.answer).includes(randumNum) == false) {
+			if ((this.answer).includes(randumNum) === false) {
 				this.answer.push(randumNum);
 			}
 		}
-		// console.log('answer:', this.answer);
+		console.log('answer:', this.answer);
 	}
 
 	private checkInputStr(inputNumStr: string[]) {
@@ -74,7 +112,7 @@ class HitAndBlow {
 
 		let checkErrerFlg = true;
 		inputNumStr.forEach(element => {
-			if (this.answerSource.includes(element) == false) {
+			if (this.answerSource.includes(element) === false) {
 				checkErrerFlg = false;
 			}
 			
@@ -91,7 +129,7 @@ class HitAndBlow {
 
 	async play() {
 		let inputNumStr = (await promptInput(`「,」区切りで${this.getAnswerLength()}つの数字を入力してください`)).split(',');
-		while (this.checkInputStr(inputNumStr) == false) {
+		while (this.checkInputStr(inputNumStr) === false) {
 			printLine('無効な入力です。')
 			inputNumStr = (await promptInput(`「,」区切りで${this.getAnswerLength()}つの数字を入力してください`)).split(',');
 		}
@@ -115,7 +153,7 @@ class HitAndBlow {
 		let blowCount = 0;
 
 		input.forEach((inputVal, index)=> {
-			if (inputVal == this.answer[index]) {
+			if (inputVal === this.answer[index]) {
 				hitCount += 1;
 			} else if (this.answer.includes(inputVal)) {
 				blowCount += 1;
@@ -130,17 +168,19 @@ class HitAndBlow {
 
 	end() {
 		printLine(`conglutts!! Trial Count: ${this.tryCount}`);
-		process.exit();
+		this.reset();
+	}
+
+	private reset() {
+		this.answer = [];
+		this.tryCount = 0;
 	}
 }
 
 // exec process
 ;(
 	async function () {
-		const hitAndBlow = new HitAndBlow();
-		await hitAndBlow.setting();
-		await hitAndBlow.play();
-		hitAndBlow.end();
+		new GameProcedure().start();
 	}
 )();
 
