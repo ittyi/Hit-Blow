@@ -16,9 +16,10 @@ node --version
 npm --version
 ```
 
-TSのインストール
+
+セットアップ（package.jsonがあるディレクトリで以下コマンド）
 ```
-npm install -g typescript@4.3.5
+npm install
 ```
 
 もしソースコード内のprocessモジュールで怒られている場合
