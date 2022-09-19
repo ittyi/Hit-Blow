@@ -1,3 +1,5 @@
+type Mode = 'normal' | 'hard';
+
 const printLine = (text: string, breakLine: boolean = true) => {
 	return process.stdout.write(text + (breakLine ? `\n`: ''))
 }
@@ -15,9 +17,9 @@ class HitAndBlow {
 	private readonly answerSource: string[] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 	private answer: string[] = [];
 	private tryCount: number = 0;
-	private mode: 'normal' | 'hard';
+	private mode: Mode;
 
-	constructor (mode: 'normal' | 'hard') {
+	constructor (mode: Mode) {
 		this.mode = mode;
 	}
 
@@ -27,6 +29,9 @@ class HitAndBlow {
 				return 3;
 			case 'hard':
 				return 4;
+			default :
+				const neverVal: never = this.mode;
+				throw new Error(`${neverVal} は無効なモードです。`)
 		}
 	}
 
