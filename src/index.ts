@@ -1,4 +1,5 @@
-type Mode = 'normal' | 'hard';
+const modes = ['normal', 'hard'] as const;
+type Mode = typeof modes[number];
 
 const printLine = (text: string, breakLine: boolean = true) => {
 	return process.stdout.write(text + (breakLine ? `\n`: ''))
@@ -56,7 +57,7 @@ class HitAndBlow {
 	}
 
 	async setting() {
-		this.mode = await promptSelect<Mode>('モードを入力してください。', ['normal', 'hard']);
+		this.mode = await promptSelect<Mode>('モードを入力してください。', modes);
 		while (this.answer.length < this.getAnswerLength()) {
 			const randumNum = String(Math.floor( Math.random() * this.answerSource.length));
 			if ((this.answer).includes(randumNum) == false) {
