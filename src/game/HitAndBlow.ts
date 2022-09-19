@@ -4,7 +4,7 @@ import { Game } from '../domain/game/interface';
 import { Mode, modes } from "../domain/hitAndBlow/interface";
 
 export class HitAndBlow implements Game {
-	private readonly answerSource: string[] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+	private readonly answerSource: string[] = [...Array(10)].map((_, i) => String(i));
 	private answer: string[] = [];
 	private tryCount: number = 0;
 	private mode: Mode = 'normal';
@@ -44,8 +44,8 @@ export class HitAndBlow implements Game {
 			}
 			
 			/// 配列中で inputNumStr[i] が最初/最後に出てくる位置を取得
-			let firstIndex = inputNumStr.indexOf(element);
-			let lastIndex = inputNumStr.lastIndexOf(element);
+			const firstIndex = inputNumStr.indexOf(element);
+			const lastIndex = inputNumStr.lastIndexOf(element);
 
 			if(firstIndex != lastIndex){
 				checkErrerFlg = false;
