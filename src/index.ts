@@ -5,23 +5,43 @@ const printLine = (text: string, breakLine: boolean = true) => {
 }
 
 const promptInput = async (text: string) => {
-	printLine(`\n${text}\n`, false)
-	const input :string = await new Promise(// 非同期処理突入
-		(resolve) => process.stdin.once('data', (data) => resolve(data.toString()))
-	)
-	return input.trim();
+	printLine(`\n${text}\n`, false);
+	return readLine();
 }
+
+const readLine = async () => {
+	const input: string = await new Promise(
+		(resolve) => process.stdin.once(
+			'data',
+			(data) => resolve(data.toString()) 
+		)
+	)
+	return input.trim()
+}
+
+const promptSelect = async <T extends string>(text: string, values: readonly T[]): Promise<T> => {
+	printLine(`\n${text}`);
+	values.forEach((value) => {
+		printLine(`- ${value}`);
+	})
+
+	printLine(`> `, false);
+
+	const input = await readLine() as T;
+	if (values.includes(input)) {
+		return input;
+	} else {
+		return promptSelect<T>(text, values);
+	}
+}
+
 
 /* main class */
 class HitAndBlow {
 	private readonly answerSource: string[] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 	private answer: string[] = [];
 	private tryCount: number = 0;
-	private mode: Mode;
-
-	constructor (mode: Mode) {
-		this.mode = mode;
-	}
+	private mode: Mode = 'normal';
 
 	private getAnswerLength() {
 		switch (this.mode) {
@@ -35,7 +55,8 @@ class HitAndBlow {
 		}
 	}
 
-	setting() {
+	async setting() {
+		this.mode = await promptSelect<Mode>('モードを入力してください。', ['normal', 'hard']);
 		while (this.answer.length < this.getAnswerLength()) {
 			const randumNum = String(Math.floor( Math.random() * this.answerSource.length));
 			if ((this.answer).includes(randumNum) == false) {
@@ -115,8 +136,8 @@ class HitAndBlow {
 // exec process
 ;(
 	async function () {
-		const hitAndBlow = new HitAndBlow('normal');
-		hitAndBlow.setting();
+		const hitAndBlow = new HitAndBlow();
+		await hitAndBlow.setting();
 		await hitAndBlow.play();
 		hitAndBlow.end();
 	}
