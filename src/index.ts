@@ -46,7 +46,7 @@ class GameProcedure {
 		} else if (action === 'change game') {
 			await this.select();
 			await this.play();
-		}else if (action === 'exit') {
+		} else if (action === 'exit') {
 			this.end();
 		} else {
 			const neverVal: never = action;

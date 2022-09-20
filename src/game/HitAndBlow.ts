@@ -40,17 +40,13 @@ export class HitAndBlow implements Game {
 
 		let checkErrorFlg = true;
 		inputNumStr.forEach(element => {
-			if (this.answerSource.includes(element) === false) {
-				checkErrorFlg = false;
-			}
+			checkErrorFlg = this.answerSource.includes(element)
 
 			/// 配列中で inputNumStr[i] が最初/最後に出てくる位置を取得
 			const firstIndex = inputNumStr.indexOf(element);
 			const lastIndex = inputNumStr.lastIndexOf(element);
 
-			if(firstIndex != lastIndex){
-				checkErrorFlg = false;
-			}
+			checkErrorFlg = firstIndex === lastIndex;
 		});
 		return checkErrorFlg;
 	}
@@ -62,15 +58,12 @@ export class HitAndBlow implements Game {
 			inputNumStr = (await promptInput(`「,」区切りで${this.getAnswerLength()}つの数字を入力してください`)).split(',');
 		}
 
-		const inputArr = inputNumStr;
-		const result = this.check(inputArr);
-		console.log(inputArr)
+		const result = this.check(inputNumStr);
+		console.log(inputNumStr)
 		console.log(result)
 
-		if (result.hit >= this.answer.length) {
-			this.tryCount += 1;
-		} else {
-			this.tryCount += 1;
+		this.tryCount += 1;
+		if (result.hit < this.answer.length) {
 			console.log('one more!', result)
 			await this.play();
 		}
