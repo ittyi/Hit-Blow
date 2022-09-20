@@ -12,7 +12,7 @@ export const readLine = async () => {
 	const input: string = await new Promise(
 		(resolve) => process.stdin.once(
 			'data',
-			(data) => resolve(data.toString()) 
+			(data) => resolve(data.toString())
 		)
 	)
 	return input.trim()
@@ -29,7 +29,6 @@ export const promptSelect = async <T extends string>(text: string, values: reado
 	const input = await readLine() as T;
 	if (values.includes(input)) {
 		return input;
-	} else {
-		return promptSelect<T>(text, values);
 	}
+	return promptSelect<T>(text, values);
 }

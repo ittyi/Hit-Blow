@@ -1,5 +1,5 @@
 
-import { printLine, promptInput, promptSelect } from '../commonn/console';
+import { printLine, promptInput, promptSelect } from '../common/console';
 
 import { Game } from '../domain/game/interface';
 import { jankenOptions, JankenOption } from "../domain/janken/interface";
@@ -73,7 +73,7 @@ export class Janken implements Game {
     } else if (userSelected === 'paper') {
 		if (randomSelected === 'rock') return 'win'
 		if (randomSelected === 'paper') return 'draw'
-		return 'lose'	
+		return 'lose'
     } else {
 		if (randomSelected === 'rock') return 'lose'
 		if (randomSelected === 'paper') return 'win'
