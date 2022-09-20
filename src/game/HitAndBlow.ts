@@ -1,20 +1,21 @@
-import { printLine, promptInput, promptSelect } from '../commonn/console';
+import { printLine, promptInput, promptSelect } from '../common/console';
 
 import { Game } from '../domain/game/interface';
 import { Mode, modes } from "../domain/hitAndBlow/interface";
+import { ANSWER_LENGTH } from "../domain/hitAndBlow/constant";
 
 export class HitAndBlow implements Game {
 	private readonly answerSource: string[] = [...Array(10)].map((_, i) => String(i));
 	private answer: string[] = [];
-	private tryCount: number = 0;
+	private tryCount = 0;
 	private mode: Mode = 'normal';
 
 	private getAnswerLength() {
 		switch (this.mode) {
 			case 'normal':
-				return 3;
+				return ANSWER_LENGTH.NORMAL;
 			case 'hard':
-				return 4;
+				return ANSWER_LENGTH.HARD;
 			default :
 				const neverVal: never = this.mode;
 				throw new Error(`${neverVal} は無効なモードです。`)
@@ -24,34 +25,34 @@ export class HitAndBlow implements Game {
 	async setting() {
 		this.mode = await promptSelect<Mode>('モードを入力してください。', modes);
 		while (this.answer.length < this.getAnswerLength()) {
-			const randumNum = String(Math.floor( Math.random() * this.answerSource.length));
-			if ((this.answer).includes(randumNum) === false) {
-				this.answer.push(randumNum);
+			const randomNum = String(Math.floor( Math.random() * this.answerSource.length));
+			if (this.answer.includes(randomNum) === false) {
+				this.answer.push(randomNum);
 			}
 		}
 		// console.log('answer:', this.answer);
 	}
 
 	private checkInputStr(inputNumStr: string[]) {
-		if (inputNumStr.length != this.answer.length) {
+		if (inputNumStr.length !== this.answer.length) {
 			return false;
 		}
 
-		let checkErrerFlg = true;
+		let checkErrorFlg = true;
 		inputNumStr.forEach(element => {
 			if (this.answerSource.includes(element) === false) {
-				checkErrerFlg = false;
+				checkErrorFlg = false;
 			}
-			
+
 			/// 配列中で inputNumStr[i] が最初/最後に出てくる位置を取得
 			const firstIndex = inputNumStr.indexOf(element);
 			const lastIndex = inputNumStr.lastIndexOf(element);
 
 			if(firstIndex != lastIndex){
-				checkErrerFlg = false;
+				checkErrorFlg = false;
 			}
 		});
-		return checkErrerFlg;
+		return checkErrorFlg;
 	}
 
 	async play() {
@@ -94,7 +95,7 @@ export class HitAndBlow implements Game {
 	}
 
 	end() {
-		printLine(`conglutts!! Trial Count: ${this.tryCount}`);
+		printLine(`Congrats!! Trial Count: ${this.tryCount}`);
 		this.reset();
 	}
 

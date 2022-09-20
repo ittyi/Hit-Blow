@@ -1,4 +1,4 @@
-import { printLine, promptSelect } from './commonn/console';
+import { printLine, promptSelect } from './common/console';
 
 import { HitAndBlow } from './game/HitAndBlow';
 import { Janken } from './game/Janken';
@@ -6,7 +6,7 @@ import { Game } from './domain/game/interface';
 
 
 const nextActions = ['play again', 'change game', 'exit'] as const;
-type NextAcion = typeof nextActions[number];
+type NextAction = typeof nextActions[number];
 
 const gameTitles = ['hit and blow', 'janken'] as const;
 type GameTitle = typeof gameTitles[number];
@@ -33,14 +33,14 @@ class GameProcedure {
 	}
 
 	private async play() {
-		if (this.currentGame == null) throw new Error('ゲームが選択されていません。');
+		if (this.currentGame === null) throw new Error('ゲームが選択されていません。');
 
 		printLine(`~~~\n${this.currentGameTitle} を開始します。\n~~~`);
 		await this.currentGame.setting();
 		await this.currentGame.play();
 		this.currentGame.end();
-		
-		const action = await promptSelect<NextAcion>('ゲームを続けますか？', nextActions);
+
+		const action = await promptSelect<NextAction>('ゲームを続けますか？', nextActions);
 		if (action === 'play again') {
 			await this.play();
 		} else if (action === 'change game') {
@@ -63,7 +63,7 @@ class GameProcedure {
 
 // exec process
 ;(
-	async function () {
+	function () {
 		new GameProcedure({
 			'hit and blow': new HitAndBlow(),
 			'janken': new Janken(),
