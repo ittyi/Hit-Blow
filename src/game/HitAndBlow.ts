@@ -40,13 +40,13 @@ export class HitAndBlow implements Game {
 
 		let checkErrorFlg = true;
 		inputNumStr.forEach(element => {
-			checkErrorFlg = this.answerSource.includes(element)
+			if (this.answerSource.includes(element) === false) checkErrorFlg = false;
 
 			/// 配列中で inputNumStr[i] が最初/最後に出てくる位置を取得
 			const firstIndex = inputNumStr.indexOf(element);
 			const lastIndex = inputNumStr.lastIndexOf(element);
 
-			checkErrorFlg = firstIndex === lastIndex;
+			if (firstIndex !== lastIndex) checkErrorFlg = false;
 		});
 		return checkErrorFlg;
 	}
