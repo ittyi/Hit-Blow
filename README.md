@@ -1,5 +1,5 @@
 # Hit&Blow
-TypeScriptの練習用プログラムです。
+TypeScriptの練習用CLIプログラムです。
 
 実際のゲーム例:
 https://www.p-game.jp/game243/
